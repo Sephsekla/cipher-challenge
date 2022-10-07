@@ -10,7 +10,7 @@ const ciphertextIndex: number[] = [ ...ciphertext ].map (
 	character => getLetterPosition( character )
 );
 
-function getLetterPosition( character: string ) {
+function getLetterPosition( character: string ) : number {
 	const characterCode: number = character.charCodeAt( 0 );
 	return characterCode - charCodeOffset;
 }
@@ -25,10 +25,12 @@ prompt.get( [
 ( err: Error | null, result: { encodedLetter: string, guessDecodedLetter: string } ): void => {
 
 	const { encodedLetter, guessDecodedLetter } = result;
-
 	const offset: number = getLetterPosition( guessDecodedLetter ) - getLetterPosition( encodedLetter );
 
-	console.log( ciphertextIndex );
-	
-	
+	const decodedCharCodes = ciphertextIndex.map(
+		character => ( character + offset )%alphabetLength + charCodeOffset
+	)
+
+
+	console.log( String.fromCharCode( ...decodedCharCodes ) );
 } );
